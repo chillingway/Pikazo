@@ -1,0 +1,5 @@
+node_modules/
+.pnpm-store/
+vendor/svg-edit/.pnpm-store/
+vendor/svg-edit/pnpm-lock.yaml
+.DS_Store
