@@ -239,13 +239,15 @@ class MainMenu {
     const template = document.createElement('template')
     template.innerHTML = `
     <se-menu id="main_button" label="Pikazo" src="logo.svg" alt="logo">
-        <se-menu-item id="tool_create_house" label="tools.create_house" src="new.svg"></se-menu-item>
-        <se-menu-item id="tool_create_bridge" label="tools.create_bridge" src="new.svg"></se-menu-item>
-        <se-menu-item id="tool_create_garden_plan" label="tools.create_garden_plan" src="new.svg"></se-menu-item>
         <se-menu-item id="tool_export" label="tools.export_img" src="export.svg"></se-menu-item>
         <se-menu-item id="tool_docprops" label="tools.docprops" shortcut="shift+D" src="docprop.svg"></se-menu-item>
         <se-menu-item id="tool_editor_prefs" label="config.editor_prefs" src="editPref.svg"></se-menu-item>
         <se-menu-item id="tool_editor_homepage" label="tools.editor_homepage" src="logo.svg"></se-menu-item>
+    </se-menu>
+    <se-menu id="template_button" label="Use template" src="shapelib.svg" alt="templates">
+        <se-menu-item id="tool_create_house" label="tools.create_house" src="new.svg"></se-menu-item>
+        <se-menu-item id="tool_create_bridge" label="tools.create_bridge" src="new.svg"></se-menu-item>
+        <se-menu-item id="tool_create_garden_plan" label="tools.create_garden_plan" src="new.svg"></se-menu-item>
     </se-menu>`
     this.editor.$svgEditor.append(template.content.cloneNode(true))
 
