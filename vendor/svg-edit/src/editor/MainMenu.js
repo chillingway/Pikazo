@@ -1,9 +1,10 @@
 /* globals seAlert */
 import SvgCanvas from '@svgedit/svgcanvas'
 import { isChrome } from '@svgedit/svgcanvas/common/browser.js'
+import { pikazoScenes } from './pikazoScenes.js'
 
 const { $id, $click, convertUnit, isValidUnit } = SvgCanvas
-const homePage = 'https://github.com/SVG-Edit/svgedit'
+const homePage = 'https://github.com/chillingway/Pikazo'
 
 /**
  *
@@ -220,13 +221,27 @@ class MainMenu {
   }
 
   /**
+   * @param {'house'|'bridge'|'garden'} sceneName
+   * @returns {void}
+   */
+  loadPikazoScene (sceneName) {
+    const scene = pikazoScenes[sceneName]
+    if (!scene) return
+    this.editor.loadSvgString(scene)
+    this.editor.svgCanvas.setMode('select')
+  }
+
+  /**
    * @type {module}
    */
   init () {
     // add Top panel
     const template = document.createElement('template')
     template.innerHTML = `
-    <se-menu id="main_button" label="SVG-Edit" src="logo.svg" alt="logo">
+    <se-menu id="main_button" label="Pikazo" src="logo.svg" alt="logo">
+        <se-menu-item id="tool_create_house" label="tools.create_house" src="new.svg"></se-menu-item>
+        <se-menu-item id="tool_create_bridge" label="tools.create_bridge" src="new.svg"></se-menu-item>
+        <se-menu-item id="tool_create_garden_plan" label="tools.create_garden_plan" src="new.svg"></se-menu-item>
         <se-menu-item id="tool_export" label="tools.export_img" src="export.svg"></se-menu-item>
         <se-menu-item id="tool_docprops" label="tools.docprops" shortcut="shift+D" src="docprop.svg"></se-menu-item>
         <se-menu-item id="tool_editor_prefs" label="config.editor_prefs" src="editPref.svg"></se-menu-item>
@@ -243,6 +258,18 @@ class MainMenu {
         .getElementById('se-export-dialog')
         .setAttribute('dialog', 'open')
     })
+    $id('tool_create_house').addEventListener(
+      'click',
+      () => this.loadPikazoScene('house')
+    )
+    $id('tool_create_bridge').addEventListener(
+      'click',
+      () => this.loadPikazoScene('bridge')
+    )
+    $id('tool_create_garden_plan').addEventListener(
+      'click',
+      () => this.loadPikazoScene('garden')
+    )
     $id('se-export-dialog').addEventListener(
       'change',
       this.clickExport.bind(this)

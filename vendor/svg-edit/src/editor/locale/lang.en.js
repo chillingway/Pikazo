@@ -134,6 +134,9 @@ export default {
     largest_object: 'largest object',
     selected_objects: 'selected objects',
     smallest_object: 'smallest object',
+    create_house: 'Create a house',
+    create_bridge: 'Create a bridge',
+    create_garden_plan: 'Create a garden plan',
     export_img: 'Export',
     import_doc: 'Import SVG',
     align_to_page: 'Align Element to Page',
@@ -172,7 +175,7 @@ export default {
     flip_vertical: 'Flip Vertically',
     ungroup: 'Ungroup Elements',
     docprops: 'Document Properties',
-    editor_homepage: 'SVG-Edit Home Page',
+    editor_homepage: 'Pikazo Home Page',
     move_bottom: 'Send to Back',
     move_top: 'Bring to Front',
     node_clone: 'Clone Node',
@@ -313,7 +316,7 @@ export default {
     exportNoforeignObject: 'foreignObject elements will not appear',
     exportNoDashArray: 'Strokes will appear filled',
     exportNoText: 'Text may not appear as expected',
-    editorPreferencesMsg: 'By default and where supported, SVG-Edit can store your editor preferences and SVG content locally on your machine so you do not need to add these back each time you load SVG-Edit. If, for privacy reasons, you do not wish to store this information on your machine, you can change away from the default option below.',
+    editorPreferencesMsg: 'By default and where supported, Pikazo can store your editor preferences and SVG content locally on your machine so you do not need to add these back each time you load Pikazo. If, for privacy reasons, you do not wish to store this information on your machine, you can change away from the default option below.',
     source_dialog_note: 'Copy the contents of this box into a text editor, then save the file with a .svg extension.'
   }
 }
