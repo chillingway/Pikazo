@@ -11,22 +11,25 @@
   <link href="./svgedit.css" rel="stylesheet" media="all">
   <script type="module" src="./browser-not-supported.js"></script>
   <title>SVG-edit (IIFE)</title>
+  <title>Pikazo</title>
 </head>
 
 <body style="margin:0">
   <div id="container" style="width:100%;height:100vh"></div>
 </body>
-<script src="./iife-Editor.js"></script>
 <script>
-  const EditorCtor = (window.Editor && window.Editor.default) || window.Editor
-  const svgEditor = new EditorCtor(document.getElementById('container'))
-  svgEditor.setConfig({
-    allowInitialUserOverride: true,
-    extensions: [],
-    noDefaultExtensions: false,
-    userExtensions: []
-  })
-  svgEditor.init()
+  const localServerUrl = 'http://127.0.0.1:8004/src/editor/index.html'
+  if (location.protocol === 'file:') {
+    location.href = localServerUrl
+  } else {
+    location.href = './index.html'
+  }
 </script>
+<noscript>
+  <div style="padding:24px;font-family:Arial,sans-serif;color:#1f3444">
+    <h1 style="margin-top:0">Open Pikazo from the local server</h1>
+    <p>Use http://127.0.0.1:8004/src/editor/index.html</p>
+  </div>
+</noscript>
 
 </html>

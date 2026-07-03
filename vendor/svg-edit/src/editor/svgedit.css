@@ -1,12 +1,12 @@
 :root {
-  --main-bg-color: #72797A;
+  --main-bg-color: #12372f;
   --text-color: #000000;
   --border-color: #808080;
   --canvas-bg-color: #B2B2B2;
   --link-color: #19c;
   --ruler-color: #B2B2B2;
-  --icon-bg-color: #72797A;
-  --icon-bg-color-hover: #2B3C45;
+  --icon-bg-color: #12372f;
+  --icon-bg-color-hover: #1f5a49;
   --input-color: #B2B2B2;
   --orange-color: #f9bc01;
   --global-se-spin-input-width: 82px;
@@ -56,7 +56,7 @@
 
 #workarea {
   grid-area: workarea;
-  background-color: #A0A0A0;
+  background-color: #0f2d26;
   border: 1px solid var(--border-color);
   overflow: auto;
   text-align: center;
@@ -315,6 +315,31 @@ hr {
   flex-direction: row;
   flex-wrap: wrap;
   background-color: var(--main-bg-color);
+}
+
+.pikazo-header-tools {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 38px;
+  padding-right: 4px;
+}
+
+.pikazo-header-button {
+  height: 32px;
+  min-width: 104px;
+  margin: 3px 1px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 3px;
+  background: var(--icon-bg-color);
+  color: #fff;
+  cursor: pointer;
+  font: 13px/32px sans-serif;
+}
+
+.pikazo-header-button:hover {
+  background: var(--icon-bg-color-hover);
 }
 
 /*—————————————————————————————*/

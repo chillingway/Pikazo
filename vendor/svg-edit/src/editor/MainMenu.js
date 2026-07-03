@@ -232,23 +232,81 @@ class MainMenu {
   }
 
   /**
+   * @returns {void}
+   */
+  calculateMaterialAreas () {
+    const svg = this.editor.svgCanvas.getSvgContent()
+    const materialAreas = new Map()
+    for (const elem of svg.querySelectorAll('[data-material][data-area-m2]')) {
+      const material = elem.getAttribute('data-material')
+      const area = Number.parseFloat(elem.getAttribute('data-area-m2'))
+      if (!material || Number.isNaN(area)) continue
+      materialAreas.set(material, (materialAreas.get(material) || 0) + area)
+    }
+
+    if (materialAreas.size === 0) {
+      this.calculateApproximateShapeAreas(svg, materialAreas)
+    }
+
+    if (materialAreas.size === 0) {
+      seAlert('No measurable template materials found.')
+      return
+    }
+
+    const rows = [...materialAreas.entries()]
+      .sort((a, b) => a[0].localeCompare(b[0]))
+      .map(([material, area]) => `${material}: ${area.toFixed(2)} m2`)
+    const total = [...materialAreas.values()].reduce((sum, area) => sum + area, 0)
+    seAlert(`Material square meters:\n${rows.join('\n')}\nTotal: ${total.toFixed(2)} m2`)
+  }
+
+  /**
+   * @param {SVGElement} svg
+   * @param {Map<string, number>} materialAreas
+   * @returns {void}
+   */
+  calculateApproximateShapeAreas (svg, materialAreas) {
+    const scale = 0.01
+    for (const rect of svg.querySelectorAll('rect')) {
+      const width = Number.parseFloat(rect.getAttribute('width'))
+      const height = Number.parseFloat(rect.getAttribute('height'))
+      if (Number.isNaN(width) || Number.isNaN(height)) continue
+      materialAreas.set('Unspecified rectangles', (materialAreas.get('Unspecified rectangles') || 0) + width * height * scale * scale)
+    }
+    for (const circle of svg.querySelectorAll('circle')) {
+      const r = Number.parseFloat(circle.getAttribute('r'))
+      if (Number.isNaN(r)) continue
+      materialAreas.set('Unspecified circles', (materialAreas.get('Unspecified circles') || 0) + Math.PI * r * r * scale * scale)
+    }
+    for (const ellipse of svg.querySelectorAll('ellipse')) {
+      const rx = Number.parseFloat(ellipse.getAttribute('rx'))
+      const ry = Number.parseFloat(ellipse.getAttribute('ry'))
+      if (Number.isNaN(rx) || Number.isNaN(ry)) continue
+      materialAreas.set('Unspecified ellipses', (materialAreas.get('Unspecified ellipses') || 0) + Math.PI * rx * ry * scale * scale)
+    }
+  }
+
+  /**
    * @type {module}
    */
   init () {
     // add Top panel
     const template = document.createElement('template')
     template.innerHTML = `
-    <se-menu id="main_button" label="Pikazo" src="logo.svg" alt="logo">
-        <se-menu-item id="tool_export" label="tools.export_img" src="export.svg"></se-menu-item>
-        <se-menu-item id="tool_docprops" label="tools.docprops" shortcut="shift+D" src="docprop.svg"></se-menu-item>
-        <se-menu-item id="tool_editor_prefs" label="config.editor_prefs" src="editPref.svg"></se-menu-item>
-        <se-menu-item id="tool_editor_homepage" label="tools.editor_homepage" src="logo.svg"></se-menu-item>
-    </se-menu>
-    <se-menu id="template_button" label="Use template" src="shapelib.svg" alt="templates">
-        <se-menu-item id="tool_create_house" label="tools.create_house" src="new.svg"></se-menu-item>
-        <se-menu-item id="tool_create_bridge" label="tools.create_bridge" src="new.svg"></se-menu-item>
-        <se-menu-item id="tool_create_garden_plan" label="tools.create_garden_plan" src="new.svg"></se-menu-item>
-    </se-menu>`
+    <div id="pikazo_header_tools" class="pikazo-header-tools">
+        <se-menu id="main_button" label="Pikazo" src="logo.svg" alt="logo">
+            <se-menu-item id="tool_export" label="tools.export_img" src="export.svg"></se-menu-item>
+            <se-menu-item id="tool_docprops" label="tools.docprops" shortcut="shift+D" src="docprop.svg"></se-menu-item>
+            <se-menu-item id="tool_editor_prefs" label="config.editor_prefs" src="editPref.svg"></se-menu-item>
+            <se-menu-item id="tool_editor_homepage" label="tools.editor_homepage" src="logo.svg"></se-menu-item>
+        </se-menu>
+        <se-menu id="template_button" label="Use template" src="shapelib.svg" alt="templates" style="min-width: 122px;">
+            <se-menu-item id="tool_create_house" label="tools.create_house" src="new.svg"></se-menu-item>
+            <se-menu-item id="tool_create_bridge" label="tools.create_bridge" src="new.svg"></se-menu-item>
+            <se-menu-item id="tool_create_garden_plan" label="tools.create_garden_plan" src="new.svg"></se-menu-item>
+        </se-menu>
+        <button id="tool_calculate_materials" class="pikazo-header-button" type="button">Calculate m2</button>
+    </div>`
     this.editor.$svgEditor.append(template.content.cloneNode(true))
 
     // register action to main menu entries
@@ -271,6 +329,10 @@ class MainMenu {
     $id('tool_create_garden_plan').addEventListener(
       'click',
       () => this.loadPikazoScene('garden')
+    )
+    $id('tool_calculate_materials').addEventListener(
+      'click',
+      this.calculateMaterialAreas.bind(this)
     )
     $id('se-export-dialog').addEventListener(
       'change',
